@@ -1,0 +1,41 @@
+%%%%%%%%%%%%%%%%%Linear Finite Diff %%%%%%%%%%%%%
+clear all
+
+h = pi/20;
+x = 0:h:pi/4;
+N = length(x); %total number of nodes
+n = N-2;
+
+D = sparse(1:n,1:n,-2*ones(1,n),n,n); % sets diag of sparse
+E = sparse(2:n,1:n-1,ones(1,n-1),n,n);
+S = E+D+E';
+A = full(S); % Makes sparse dense
+A = (1/h^2).*A;
+
+
+tic   %sets timer
+ 
+for j = 1:N  %Sets force
+
+    Y(j) = -cos(x(j));
+    
+end
+
+
+
+DET = det(A) % Calculates the determinant
+
+
+Y = Y(2:N-1)';
+
+U = A\-Y; %matrix solve
+
+toc %end timer
+U = [0;U;0]; 
+
+Y_exact =  -1/3*cos(2.*x)-sqrt(2)/6*sin(2.*x)+1/3*cos(x);
+ 
+plot(x,U, 'd'); hold on;
+plot(x,Y_exact, 'r')
+title('Linear Finite Difference ')
+legend('approx','soln')
